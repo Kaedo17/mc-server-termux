@@ -25,16 +25,20 @@ if [ "$java_ver" = 17 ]; then
     pkg remove openjdk-17 -y && echo "Removed Java 17" || echo "Error removing Java 17"
 fi
 
-if [ "$java_ver" != 21 ]; then
-    pkg install openjdk-21 -y && echo "Installed Java 21" || echo "Error installing Java 21"
+if [ "$java_ver" = 21 ]; then
+    pkg remove openjdk-21 -y && echo "Removed Java 21" || echo "Error removing Java 21"
+fi
+
+if [ "$java_ver" != 25 ]; then
+    pkg install openjdk-25 -y && echo "Installed Java 25" || echo "Error installing Java 25"
 fi
 
 pkg autoclean && pkg clean -y && echo "Cleaned packages" || echo "Error cleaning packages"
 
 java_ver=$(java -version 2>&1 | awk -F[\"\.] -v OFS=. 'NR==1{print $2}')
 
-if [ "$java_ver" != 21 ]; then
-    echo "Java 21 is not installed or is not working"
+if [ "$java_ver" != 25 ]; then
+    echo "Java 25 is not installed or is not working"
     exit 1
 fi
 
@@ -60,10 +64,10 @@ if [ "$server_type" != "1" ] && [ "$server_type" != "2" ] && [ "$server_type" !=
     exit 1
 fi
 
-read -p "Enter Minecraft version (e.g., 1.21.9): " version
+read -p "Enter Minecraft version (e.g., 1.21.10): " version
 
 if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "Invalid version format. Expected format: x.x.x (e.g., 1.21.9)"
+    echo "Invalid version format. Expected format: x.x.x (e.g., 1.21.10)"
     exit 1
 fi
 
