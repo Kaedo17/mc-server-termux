@@ -1,7 +1,7 @@
 # Minecraft Server on Termux
 This script allows you to easily set up and run a Minecraft server on your Android device using Termux. It supports Paper, Purpur, DivineMC, Fabric, Folia, Vanilla, Spigot and Forge server types, and automates the installation of Java, downloading the server files, and configuring the server.
 # Features
-Automatic Java Installation: Installs the correct version of Java (OpenJDK 21) for your server.
+Automatic Java Installation: Installs the latest version of Java (OpenJDK 25) for your server.
 Storage Permissions: Requests and sets up storage permissions for Termux.
 Customizable Server Directory: Lets you choose where to store your Minecraft server files.
 RAM Allocation: Allows you to specify how much RAM to allocate to the server.

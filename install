@@ -64,10 +64,10 @@ if [ "$server_type" != "1" ] && [ "$server_type" != "2" ] && [ "$server_type" !=
     exit 1
 fi
 
-read -p "Enter Minecraft version (e.g., 1.21.10): " version
+read -p "Enter Minecraft version (e.g., 1.21.11): " version
 
 if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "Invalid version format. Expected format: x.x.x (e.g., 1.21.10)"
+    echo "Invalid version format. Expected format: x.x.x (e.g., 1.21.11)"
     exit 1
 fi
 
@@ -142,17 +142,30 @@ fi
 echo "Acepting Minecraft eula..."
 echo "eula=true" > "eula.txt"
 
+read -p "Enable Aikar's Flags (yes or no, default yes, not working on 32 bits devices): " enable_aikar_flags
+
+if [ "$enable_aikar_flags" != "yes" ] && [ "$enable_aikar_flags" != "no" ] && [ "$enable_aikar_flags" != "" ]; then
+    echo "Invalid option. Exiting."
+    exit 1
+fi
+
+if [ "$enable_aikar_flags" = "yes" ] || [ "$enable_aikar_flags" = "" ]; then
+    server_flags="-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true"
+else
+    server_flags=""
+fi
+
 if [ "$server_type" = "8" ]; then
     {
     echo "#!/bin/bash"
     echo "cd \"$server_dir\""
-    echo "java -Xms${ram}G -Xmx${ram}G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true @libraries/net/minecraftforge/forge/${version}-${forge_version}/unix_args.txt \"\$@\" nogui"
+    echo "java -Xms${ram}G -Xmx${ram}G ${server_flags} @libraries/net/minecraftforge/forge/${version}-${forge_version}/unix_args.txt \"\$@\" nogui"
     } > "$mcserver_path"
 else
     {
     echo "#!/bin/bash"
     echo "cd \"$server_dir\""
-    echo "java -Xms${ram}G -Xmx${ram}G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -jar server.jar nogui"
+    echo "java -Xms${ram}G -Xmx${ram}G ${server_flags} -jar server.jar nogui"
     } > "$mcserver_path"
 fi
 
