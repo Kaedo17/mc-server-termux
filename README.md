@@ -21,7 +21,7 @@ This command will:
 - Execute the script to set up your Minecraft server.
 # Usage
 After running the installation script, follow the on-screen instructions to:
-Choose a directory for your server.
+- Choose a directory for your server.
 - Select the amount of RAM to allocate.
 - Pick the server type (Paper, Purpur, DivineMC, Fabric, Folia, Vanilla, Spigot or Forge).
 - Specify the Minecraft version.
