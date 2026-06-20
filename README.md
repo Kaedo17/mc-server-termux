@@ -14,7 +14,7 @@ This script allows you to easily set up and run a Minecraft server on your Andro
 # Installation
 To set up your Minecraft server, simply run the following command in Termux:
 ```bash
-curl -s -o ~/x https://raw.githubusercontent.com/ramide1/mc-server-termux/main/install && . ~/x
+curl -s -o ~/x https://raw.githubusercontent.com/Kaedo17/mc-server-termux/main/install && . ~/x
 ```
 This command will:
 - Download the installation script.

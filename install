@@ -75,7 +75,7 @@ case "$server_type" in
     1)
         echo "Fetching PaperMC build information..."
         paper_api="https://api.papermc.io/v2/projects/paper/versions/$version"
-        latest_build=$(curl -s "$paper_api" | grep -o '"builds":[^]]*' | sed 's/.*,//')
+        latest_build=$(curl -s "$paper_api" | tr '\n' ' ' | tr -d ' ' | grep -o '"builds":\[[0-9,]*\]' | grep -oE '[0-9]+' | tail -1)
         if [ -z "$latest_build" ]; then
             echo "Error fetching build information. Exiting."
             exit 1
